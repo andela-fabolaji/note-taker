@@ -16,8 +16,13 @@ class NotesApplication {
      *
      */
     constructor(author) {
-        this.author = author.toString();
+        if (typeof(author) == 'undefined'){
+            this.author = 'Author Default';
+        } else {
+            this.author = author.toString();
+        }
         this.notes = [];
+        
     }
 
     /**
