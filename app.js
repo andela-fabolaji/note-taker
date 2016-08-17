@@ -16,7 +16,7 @@ class NotesApplication {
      *
      */
     constructor(author) {
-        this.author = author;
+        this.author = author.toString();
         this.notes = [];
     }
 
@@ -53,6 +53,7 @@ class NotesApplication {
     create(note_content) {
         note_content = note_content.toString();
         this.notes.push(note_content);
+        console.log('Note successfully created');
     }
 
     /**
@@ -69,6 +70,7 @@ class NotesApplication {
         for (let i = 0; i < this.notes.length; i++) {
             console.log('Note ID: ' + [i]);
             console.log([this.notes[i]]);
+            console.log('\n');
         }
 
         console.log('\n By Author ' + [this.author]);
@@ -112,12 +114,12 @@ class NotesApplication {
             console.log('cannot retrieve empty search query');
         }
         
-        if (isEmptyNotes()) {
+        if (this.isEmptyNotes()) {
             console.log('You currently have no notes');
         }
 
         for (let i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].indexOf(search_text) >= 0) {
+            if (this.notes[i].toLowerCase().indexOf(search_text.toLowerCase()) >= 0) {
                 search_result.push(this.notes[i]);
                 note_id.push(i);
             }
@@ -125,7 +127,7 @@ class NotesApplication {
 
         if (search_result.length >= 1) {
             console.log('Showing results for: ' + [search_text]);
-            for (let i; i < search_result.length; i++) {
+            for (let i = 0; i < search_result.length; i++) {
                 console.log('Note ID: ' + note_id[i]);
                 console.log([search_result[i]]);
             }
