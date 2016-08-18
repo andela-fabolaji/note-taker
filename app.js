@@ -17,12 +17,11 @@ class NotesApplication {
      */
     constructor(author) {
         if (typeof(author) == 'undefined'){
-            this.author = 'Author Default';
+            this.author = 'Anonymous';
         } else {
             this.author = author.toString();
         }
         this.notes = [];
-        
     }
 
     /**
@@ -33,8 +32,10 @@ class NotesApplication {
      * @return {boolean}
      */
     isValidNoteId(note_id) {
-        if (typeof(note_id) !== 'number' || note_id >= this.notes.length || note_id < 0) return false;
-        return true;
+        let validity = true;
+        
+        if (isNaN(note_id) || note_id >= this.notes.length || note_id < 0 || note_id.toString().length === 0) validity = false;
+        return validity;
     }
 
     /**
@@ -44,8 +45,11 @@ class NotesApplication {
      * @return {boolean}
      */
     isEmptyNotes() {
-        if (this.notes.length === 0) return true;
-        return false;
+        let isEmpty = false;
+        
+        if (this.notes.length === 0) isEmpty = true;
+        
+        return isEmpty;
     }
 
     /**
@@ -57,8 +61,17 @@ class NotesApplication {
      */
     create(note_content) {
         note_content = note_content.toString();
-        this.notes.push(note_content);
-        console.log('Note successfully created');
+        let msg;
+        
+        if (note_content.length > 0) {
+            this.notes.push(note_content);
+            msg = 'Note successfully created';
+        } else {
+            msg = 'Cannot create an empty note!';
+        }
+        
+        console.log(msg);
+        
     }
 
     /**
@@ -69,16 +82,22 @@ class NotesApplication {
      *
      */
     listNotes() {
-        if (this.isEmptyNotes()) return 'No notes up yet';
+        
+        let msg;
+        
+        if (this.isEmptyNotes()) { 
+            msg = 'No notes up yet';
+        } else {
 
-
-        for (let i = 0; i < this.notes.length; i++) {
-            console.log('Note ID: ' + [i]);
-            console.log([this.notes[i]]);
-            console.log('\n');
+            for (let i = 0; i < this.notes.length; i++) {
+                console.log('Note ID: ' + i);
+                console.log(this.notes[i]);
+                console.log('\n');
+            }
+            
+            msg = '\n By Author ' + [this.author];
         }
-
-        console.log('\n By Author ' + [this.author]);
+        console.log(msg);
     }
 
     /**
@@ -90,15 +109,14 @@ class NotesApplication {
      */
     getNote(note_id) {
         let response;
+        note_id = parseInt(note_id);
 
         if (this.isValidNoteId(note_id)) {
-            note_id = parseInt(note_id);
+            response = this.notes[note_id];    
         } else {
-            response = 'Invalid id';
+            response = 'Invalid Id';
         }
 
-        response = this.notes[note_id];
-        
         console.log(response);
     }
 
@@ -110,36 +128,39 @@ class NotesApplication {
      *
      */
     search(search_text) {
-        
-        search_text = search_text.toString();
         let search_result = [];
         let note_id = [];
-
-        if (search_text.length === 0) {
-            console.log('cannot retrieve empty search query');
-        }
+        let msg;
         
         if (this.isEmptyNotes()) {
-            console.log('You currently have no notes');
-        }
-
-        for (let i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].toLowerCase().indexOf(search_text.toLowerCase()) >= 0) {
-                search_result.push(this.notes[i]);
-                note_id.push(i);
-            }
-        }
-
-        if (search_result.length >= 1) {
-            console.log('Showing results for: ' + [search_text]);
-            for (let i = 0; i < search_result.length; i++) {
-                console.log('Note ID: ' + note_id[i]);
-                console.log([search_result[i]]);
-            }
-            console.log('\n By Author ' + [this.author]);
+            msg = 'You currently have no notes';
         } else {
-            console.log('No results found');
+        
+            if (typeof(search_text) === 'undefined' || search_text.toString().length === 0) {
+                msg = 'Cannot retrieve empty search query';
+            } else {
+                search_text = search_text.toString().toLowerCase();
+    
+                for (let i = 0; i < this.notes.length; i++) {
+                    if (this.notes[i].toLowerCase().indexOf(search_text) >= 0) {
+                        search_result.push(this.notes[i]);
+                        note_id.push(i);
+                    }
+                }
+        
+                if (search_result.length >= 1) {
+                    console.log('Showing results for: ' + [search_text]);
+                    for (let i = 0; i < search_result.length; i++) {
+                        console.log('Note ID: ' + note_id[i]);
+                        console.log([search_result[i]]);
+                    }
+                    console.log('\n By Author ' + [this.author]);
+                } else {
+                    msg = 'No result found';
+                }
+            }
         }
+        console.log(msg);
     }
 
     /**
@@ -150,15 +171,24 @@ class NotesApplication {
      *
      */
     deleteNote(note_id) {
-
-        if (this.isValidNoteId(note_id)) {
-            note_id = parseInt(note_id);
+        note_id = parseInt(note_id);
+        
+        let msg;
+        
+        if (this.isEmptyNotes === true) {
+            msg = 'There are no notes to delete';
         } else {
-            console.log('Invalid ID');
+            if (this.isValidNoteId(note_id)) {
+                this.notes.splice(note_id, 1);
+                msg = 'Note on id: ' + note_id.toString() + ' has been successfully removed';
+            } else {
+                msg = 'Invalid ID';
+            }
         }
+        
 
-        this.notes.splice(note_id, 1);
-        console.log('Note on id: ' + note_id.toString() + ' has been successfully removed');
+        console.log(msg);
+        
     }
 
     /**
