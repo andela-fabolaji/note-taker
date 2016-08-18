@@ -1,0 +1,28 @@
+{
+  "name": "note-taker",
+  "version": "1.0.0",
+  "description": "A note taking application",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/femipixels/note-taker.git"
+  },
+  "keywords": [
+    "simple",
+    "notes",
+    "app"
+  ],
+  "author": "Abolaji Femi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/femipixels/note-taker/issues"
+  },
+  "homepage": "https://github.com/femipixels/note-taker#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
+  }
+}
