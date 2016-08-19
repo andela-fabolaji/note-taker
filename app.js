@@ -30,7 +30,8 @@ class NotesApplication {
      * into it is valid
      * 
      * @param {int} note_id
-     * @return {boolean}
+     * @return {boolean} validity
+     *
      */
     isValidNoteId(note_id) {
         let validity = true;
@@ -45,7 +46,8 @@ class NotesApplication {
      * This method checks if the 'this.notes'
      * is empty. Returns 'true' if empty and false if not empty
      *
-     * @return {boolean}
+     * @return {boolean} isEmpty
+     *
      */
     isEmptyNotes() {
         let isEmpty = false;
@@ -80,7 +82,7 @@ class NotesApplication {
      * This method returns a message if there are no notes 
      * and prints notes to the console if there are notes
      *
-     * @return {string} 
+     * @return {string} msg
      *
      */
     listNotes() {
@@ -178,7 +180,7 @@ class NotesApplication {
      * This method returns a message if there are no notes 
      * and prints notes to the console if there are notes
      *
-     * @return {string} 
+     * @return {string} msg
      *
      */
     deleteNote(note_id) {
@@ -226,5 +228,5 @@ class NotesApplication {
 
         console.log(msg);
      }
-     
+
 }
