@@ -60,10 +60,11 @@ class NotesApplication {
      *
      */
     create(note_content) {
-        note_content = note_content.toString();
+        
         let msg;
         
-        if (note_content.length > 0) {
+        if (note_content && note_content.toString().length > 0) {
+        	note_content = note_content.toString();
             this.notes.push(note_content);
             msg = 'Note successfully created';
         } else {
@@ -109,13 +110,21 @@ class NotesApplication {
      */
     getNote(note_id) {
         let response;
-        note_id = parseInt(note_id);
+        
 
-        if (this.isValidNoteId(note_id)) {
-            response = this.notes[note_id];    
-        } else {
-            response = 'Invalid Id';
-        }
+		if (!this.isEmptyNotes()) {
+			
+			note_id = parseInt(note_id);
+			
+			if (this.isValidNoteId(note_id)) {
+            	response = this.notes[note_id];    
+        	} else {
+            	response = 'Invalid Id';
+        	}	
+		} else {
+			response = 'You currently have no notes';
+		}
+        
 
         console.log(response);
     }
@@ -149,12 +158,15 @@ class NotesApplication {
                 }
         
                 if (search_result.length >= 1) {
+                	let count = 0;
                     console.log('Showing results for: ' + [search_text]);
                     for (let i = 0; i < search_result.length; i++) {
                         console.log('Note ID: ' + note_id[i]);
                         console.log([search_result[i]]);
+                        count++;
                     }
                     console.log('\n By Author ' + [this.author]);
+                    msg = count + ' result(s) returned';
                 } else {
                     msg = 'No result found';
                 }
@@ -171,13 +183,13 @@ class NotesApplication {
      *
      */
     deleteNote(note_id) {
-        note_id = parseInt(note_id);
         
         let msg;
         
         if (this.isEmptyNotes === true) {
             msg = 'There are no notes to delete';
         } else {
+        	
             if (this.isValidNoteId(note_id)) {
                 this.notes.splice(note_id, 1);
                 msg = 'Note on id: ' + note_id.toString() + ' has been successfully removed';
@@ -203,17 +215,17 @@ class NotesApplication {
      editNote(note_id, new_content) {
         let msg;
 
-        if (this.isValidNoteId(note_id) && new_content.toString().length !== 0){
+        if (this.isValidNoteId(note_id) && new_content){
             note_id = parseInt(note_id);
+            
+            if (!this.isEmptyNotes()) {
+	            this.notes[note_id] = new_content.toString();
+	            msg = 'Note successfully updated';
+	        } else {
+	            msg = 'You can\'t update an empty list';
+	        }
         } else {
             msg = 'Unable to update. Please check that your note id is valid and new content is not empty';
-        }
-
-        if (!this.isEmptyNotes()) {
-            this.notes[note_id] = new_content;
-            msg = 'Note successfully updated';
-        } else {
-            msg = 'You can\'t update an empty list';
         }
 
         console.log(msg);
